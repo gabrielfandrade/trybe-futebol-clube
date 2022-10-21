@@ -8,4 +8,5 @@ ENV  DB_USER=root
 ENV  DB_PASS=123456
 ENV  DB_HOST=db
 ENV  DB_PORT=3002
+RUN npm run build
 CMD ["npm", "start"]
