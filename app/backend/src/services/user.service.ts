@@ -8,7 +8,7 @@ interface IRequest {
 class UserService {
   public static login = async ({ email, password }: IRequest) => {
     const user = await User.findOne({
-      where: { email },
+      where: { email, password },
     });
 
     if (!user) {
