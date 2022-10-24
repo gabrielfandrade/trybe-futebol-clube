@@ -13,6 +13,14 @@ class UserController {
       return res.status(401).json({ message: 'Incorrect email or password' });
     }
   };
+
+  public static validate = async (req: Request, res: Response) => {
+    const { authorization } = req.headers;
+
+    const role = await userService.validate(authorization as string);
+
+    res.status(200).json({ role });
+  };
 }
 
 export default UserController;

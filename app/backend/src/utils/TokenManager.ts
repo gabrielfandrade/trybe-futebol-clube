@@ -1,4 +1,4 @@
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import { IUserWithoutPassword } from '../interfaces/IUser';
 
 const tokenSecret = process.env.JWT_SECRET || 'senhaSecreta';
@@ -15,6 +15,20 @@ class TokenManager {
     const token = sign(payload, tokenSecret);
 
     return token;
+  }
+
+  public static authorizationToken(authorization: string): IUserWithoutPassword {
+    if (!authorization) {
+      throw new Error('Invalid Token');
+    }
+
+    try {
+      const user = verify(authorization, tokenSecret);
+
+      return user as IUserWithoutPassword;
+    } catch (error) {
+      throw new Error('Invalid Token');
+    }
   }
 }
 

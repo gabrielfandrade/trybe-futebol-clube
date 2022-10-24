@@ -25,6 +25,12 @@ class UserService {
 
     return token;
   };
+
+  public static validate = async (authorization: string) => {
+    const { role } = TokenManager.authorizationToken(authorization);
+
+    return role;
+  };
 }
 
 export default UserService;

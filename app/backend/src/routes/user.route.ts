@@ -8,4 +8,6 @@ const { validateEmail, validatePassword } = ValidateUser;
 
 userRoute.post('/', validateEmail, validatePassword, UserController.login);
 
+userRoute.get('/validate', UserController.validate);
+
 export default userRoute;
