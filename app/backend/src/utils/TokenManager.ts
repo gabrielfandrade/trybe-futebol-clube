@@ -1,7 +1,7 @@
 import { sign, verify } from 'jsonwebtoken';
 import { IUserWithoutPassword } from '../interfaces/IUser';
 
-const tokenSecret = process.env.JWT_SECRET || 'senhaSecreta';
+const tokenSecret = process.env.JWT_SECRET;
 
 class TokenManager {
   public static createToken({ id, username, role, email }: IUserWithoutPassword): string {
@@ -12,23 +12,15 @@ class TokenManager {
       email,
     };
 
-    const token = sign(payload, tokenSecret);
+    const token = sign(payload, tokenSecret as string);
 
     return token;
   }
 
   public static authorizationToken(authorization: string): IUserWithoutPassword {
-    if (!authorization) {
-      throw new Error('Invalid Token');
-    }
+    const user = verify(authorization, tokenSecret as string);
 
-    try {
-      const user = verify(authorization, tokenSecret);
-
-      return user as IUserWithoutPassword;
-    } catch (error) {
-      throw new Error('Invalid Token');
-    }
+    return user as IUserWithoutPassword;
   }
 }
 
