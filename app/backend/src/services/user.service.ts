@@ -1,4 +1,6 @@
 import User from '../database/models/user';
+import TokenManager from '../utils/TokenManager';
+import bcrypt from '../utils/bcrypt';
 
 interface IRequest {
   email: string;
@@ -8,14 +10,20 @@ interface IRequest {
 class UserService {
   public static login = async ({ email, password }: IRequest) => {
     const user = await User.findOne({
-      where: { email, password },
+      where: { email },
     });
 
     if (!user) {
-      return 'Nenhum Usuario encontrado';
+      throw new Error('Incorrect email or password');
     }
 
-    return user;
+    if (!bcrypt.checkPassword(password, user.password)) {
+      throw new Error('Incorrect email or password');
+    }
+
+    const token = TokenManager.createToken(user);
+
+    return token;
   };
 }
 
