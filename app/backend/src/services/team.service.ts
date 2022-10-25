@@ -14,6 +14,14 @@ class TeamService {
 
     return team;
   };
+
+  public static count = async (homeTeam: number, awayTeam: number) => {
+    const count = await Team.findAndCountAll({
+      where: { id: [homeTeam, awayTeam] },
+    });
+
+    return count;
+  };
 }
 
 export default TeamService;

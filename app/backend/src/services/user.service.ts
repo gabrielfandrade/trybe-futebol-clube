@@ -1,3 +1,4 @@
+import { IUserWithoutPassword } from '../interfaces/IUser';
 import User from '../database/models/user';
 import TokenManager from '../utils/TokenManager';
 import bcrypt from '../utils/bcrypt';
@@ -27,9 +28,9 @@ class UserService {
   };
 
   public static validate = async (authorization: string) => {
-    const { role } = TokenManager.authorizationToken(authorization);
+    const user = TokenManager.authorizationToken(authorization);
 
-    return role;
+    return user as unknown as IUserWithoutPassword;
   };
 }
 

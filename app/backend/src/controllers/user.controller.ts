@@ -17,7 +17,7 @@ class UserController {
   public static validate = async (req: Request, res: Response) => {
     const { authorization } = req.headers;
 
-    const role = await userService.validate(authorization as string);
+    const { role } = await userService.validate(authorization as string);
 
     res.status(200).json({ role });
   };

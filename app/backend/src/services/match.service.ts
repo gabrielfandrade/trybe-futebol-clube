@@ -1,6 +1,13 @@
 import Team from '../database/models/team';
 import Match from '../database/models/match';
 
+interface IRequest {
+  homeTeam: number,
+  awayTeam: number,
+  homeTeamGoals: number,
+  awayTeamGoals: number,
+}
+
 class MatchService {
   public static matches = async () => {
     const matches = await Match.findAll({
@@ -35,6 +42,24 @@ class MatchService {
     });
 
     return matches;
+  };
+
+  public static create = async ({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }: IRequest) => {
+    const inProgress = true;
+
+    const match = await Match
+      .create({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress });
+
+    return match;
+  };
+
+  public static finish = async (id: string) => {
+    await Match.update(
+      { inProgress: false },
+      { where: { id } },
+    );
+
+    return { message: 'Finished' };
   };
 }
 

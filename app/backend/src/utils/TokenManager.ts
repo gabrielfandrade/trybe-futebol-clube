@@ -17,10 +17,18 @@ class TokenManager {
     return token;
   }
 
-  public static authorizationToken(authorization: string): IUserWithoutPassword {
-    const user = verify(authorization, tokenSecret as string);
+  public static authorizationToken(authorization: string): string {
+    if (!authorization) {
+      return 'Invalid';
+    }
 
-    return user as IUserWithoutPassword;
+    try {
+      const user = verify(authorization, tokenSecret as string);
+
+      return user as string;
+    } catch (error) {
+      return 'Invalid';
+    }
   }
 }
 
