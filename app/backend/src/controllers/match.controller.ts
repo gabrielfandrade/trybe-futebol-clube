@@ -33,6 +33,16 @@ class MatchController {
 
     return res.status(200).json(message);
   };
+
+  public static goals = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+
+    const match = await MatchService.goals(id, homeTeamGoals, awayTeamGoals);
+
+    return res.status(200).json(match);
+  };
 }
 
 export default MatchController;

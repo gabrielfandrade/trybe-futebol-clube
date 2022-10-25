@@ -15,4 +15,6 @@ matchRoute.post('/', validateTeams, validateDB, validateToken, MatchController.c
 
 matchRoute.patch('/:id/finish', MatchController.finish);
 
+matchRoute.patch('/:id', MatchController.goals);
+
 export default matchRoute;
