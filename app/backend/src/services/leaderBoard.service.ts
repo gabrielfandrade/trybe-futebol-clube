@@ -20,6 +20,40 @@ class LeaderBoardService {
     return leaderBoard;
   };
 
+  public static board = async () => {
+    const [home] = await db.query(homeQuery);
+    const [away] = await db.query(awayQuery);
+
+    const matches = LeaderBoardService.geral(home as IMatch[], away as IMatch[]);
+
+    const leaderBoard = LeaderBoardService.leaderBoard(matches as IMatch[]);
+
+    return leaderBoard;
+  };
+
+  private static geral = (home: IMatch[], away: IMatch[]) => {
+    const matches: IMatch[] = [];
+
+    for (let i = 0; i < home.length; i += 1) {
+      for (let j = 0; j < away.length; j += 1) {
+        if (home[i].name === away[j].name) {
+          const { name } = home[i];
+          const totalVictories = +home[i].totalVictories + +away[j].totalVictories;
+          const totalDraws = +home[i].totalDraws + +away[j].totalDraws;
+          const totalLosses = +home[i].totalLosses + +away[j].totalLosses;
+          const goalsFavor = +home[i].goalsFavor + +away[j].goalsFavor;
+          const goalsOwn = +home[i].goalsOwn + +away[j].goalsOwn;
+
+          matches.push(
+            { name, totalVictories, totalDraws, totalLosses, goalsFavor, goalsOwn },
+          );
+        }
+      }
+    }
+
+    return matches;
+  };
+
   private static leaderBoard = (matches: IMatch[]): LeaderBoard[] => {
     const leaderBoard: LeaderBoard[] = [];
 
