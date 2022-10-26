@@ -1,11 +1,19 @@
 import IMatch from '../interfaces/IMatch';
 import LeaderBoard from '../utils/LeaderBoard';
 import db from '../database/models';
-import query from '../utils/Query';
+import { homeQuery, awayQuery } from '../utils/Query';
 
 class LeaderBoardService {
-  public static board = async () => {
-    const [matches] = await db.query(query);
+  public static homeBoard = async () => {
+    const [matches] = await db.query(homeQuery);
+
+    const leaderBoard = LeaderBoardService.leaderBoard(matches as IMatch[]);
+
+    return leaderBoard;
+  };
+
+  public static awayBoard = async () => {
+    const [matches] = await db.query(awayQuery);
 
     const leaderBoard = LeaderBoardService.leaderBoard(matches as IMatch[]);
 
